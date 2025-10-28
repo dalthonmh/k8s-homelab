@@ -1,14 +1,18 @@
 # Abrir PowerShell como Administrador
+# Creación: 28/10/2025
+# Autor: dalthonmh
 
-# falcon9 es el nombre de la VM que vamos a crear
 # -----------------------------------------------
-# Eliminar la maquina virtual
-Remove-VM -Name "falcon9" -Force
+# Configuracion de red
+# Crear un switch externo en modo bridge usando el Wi-Fi
+New-VMSwitch -Name "WiFi-Bridge" -NetAdapterName "Wi-Fi" -AllowManagementOS $true
 # -----------------------------------------------
+
 
 
 # -----------------------------------------------
 # Crear VM Generación 2
+# Nota: falcon9 es el nombre de la VM que vamos a crear
 New-VM -Name "falcon9" `
     -MemoryStartupBytes 2GB `
     -Generation 2 `
@@ -30,9 +34,12 @@ Add-VMDvdDrive -VMName "falcon9" `
 $dvd = Get-VMDvdDrive -VMName "falcon9"
 Set-VMFirmware -VMName "falcon9" -FirstBootDevice $dvd
 
-
-
-# Configuracion de red
-# Crear un switch externo en modo bridge usando el Wi-Fi
-# New-VMSwitch -Name "WiFi-Bridge" -NetAdapterName "Wi-Fi" -AllowManagementOS $true
+# Setear la red
 Connect-VMNetworkAdapter -VMName "falcon9" -SwitchName "WiFi-Bridge"
+
+
+
+# -----------------------------------------------
+# Eliminar la maquina virtual
+Remove-VM -Name "falcon9" -Force
+# -----------------------------------------------
