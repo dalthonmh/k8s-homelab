@@ -17,6 +17,24 @@ Descargar la ISO del sistema operativo a instalar.
 
 - [debian](https://www.debian.org/distrib/netinst)
 
+## Recursos a considerar
+
+Definimos la cantidad de recursos a usar de acuerdo a la capacidad del equipo.
+
+- Nombre: falcon9
+- Generación: 2
+- Memoria: 2 GB de RAM
+- Procesadores: 2 núcleos
+- Disco duro: 20 GB (VHDX)
+- Firmware: Secure Boot deshabilitado
+- ISO adjunto: Debian 13 (Netinst)
+- Orden de arranque: DVD primero
+- Red: Conexión a un switch externo en modo bridge (WiFi-Bridge)
+
+## Ejecutar los comandos
+
+En el archivo powershell.ps1 ejecutamos los comandos para `1. Crear VM Generación 2`
+
 ## Configuración de la red
 
 Configuraremos la red para poner una IP estática al sistema operativo.
@@ -37,20 +55,48 @@ New-VMSwitch -Name "WiFi-Bridge" -NetAdapterName "Wi-Fi" -AllowManagementOS $tru
 4. De nombre le ponemos "WiFi-Bridge"
 5. En tipo de conexión seleccionamos la que contenga "Wi-Fi Adapter"
 
-## Recursos a considerar
+Luego de instalar el sistema operativo para que tenga IP estática, configuraremos lo siguiente:
 
-Definimos la cantidad de recursos a usar de acuerdo a la capacidad del equipo.
+```ps1
+Connect-VMNetworkAdapter -VMName "falcon9" -SwitchName "WiFi-Bridge"
+```
 
-- Nombre: falcon9
-- Generación: 2
-- Memoria: 2 GB de RAM
-- Procesadores: 2 núcleos
-- Disco duro: 20 GB (VHDX)
-- Firmware: Secure Boot deshabilitado
-- ISO adjunto: Debian 13 (Netinst)
-- Orden de arranque: DVD primero
-- Red: Conexión a un switch externo en modo bridge (WiFi-Bridge)
+Dentro del sistema operativo actualizamos esta configuración
 
-## Ejecutar los comandos
+```sh
+vim /etc/network/interfaces
+```
 
-En el archivo powershell.ps1 encontraremos los comandos para crear máquinas virtuales.
+Actualizamos a la siguiente configuración donde 192.168.0.112 es la ip que colocaremos
+
+```sh
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto eth0
+iface eth0 inet static
+    address 192.168.0.112
+    netmask 255.255.255.0
+    gateway 192.168.0.1
+    dns-nameservers 8.8.8.8 1.1.1.1
+```
+
+Actualizamos la configuración
+
+```sh
+sudo systemctl restart networking
+```
+
+Cambiamos el nombre del nodo
+
+```sh
+sudo hostnamectl set-hostname falcon9
+hostname
+```

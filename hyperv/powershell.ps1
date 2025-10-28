@@ -2,8 +2,36 @@
 # Creación: 28/10/2025
 # Autor: dalthonmh
 
+
 # -----------------------------------------------
-# Configuracion de red
+# 1. Crear VM Generación 2
+# Nota: crewdragon es el nombre de la VM que vamos a crear
+New-VM -Name "crewdragon" `
+    -MemoryStartupBytes 2GB `
+    -Generation 2 `
+    -NewVHDPath "C:\Hyper-V\crewdragon.vhdx" `
+    -NewVHDSizeBytes 20GB `
+    -SwitchName "Default Switch"
+
+# Configurar procesadores
+Set-VMProcessor -VMName "crewdragon" -Count 2
+
+# Deshabilitar Secure Boot (importante para instalación)
+Set-VMFirmware -VMName "crewdragon" -EnableSecureBoot Off
+
+# Adjuntar ISO de Debian
+Add-VMDvdDrive -VMName "crewdragon" `
+    -Path "D:\iso\debian-13-amd64-netinst.iso"
+
+# Configurar boot desde DVD primero
+$dvd = Get-VMDvdDrive -VMName "crewdragon"
+Set-VMFirmware -VMName "crewdragon" -FirstBootDevice $dvd
+# -----------------------------------------------
+
+
+
+# -----------------------------------------------
+# 2. Configuracion de red
 # Crear un switch externo en modo bridge usando el Wi-Fi
 New-VMSwitch -Name "WiFi-Bridge" -NetAdapterName "Wi-Fi" -AllowManagementOS $true
 # -----------------------------------------------
@@ -11,35 +39,13 @@ New-VMSwitch -Name "WiFi-Bridge" -NetAdapterName "Wi-Fi" -AllowManagementOS $tru
 
 
 # -----------------------------------------------
-# Crear VM Generación 2
-# Nota: falcon9 es el nombre de la VM que vamos a crear
-New-VM -Name "falcon9" `
-    -MemoryStartupBytes 2GB `
-    -Generation 2 `
-    -NewVHDPath "C:\Hyper-V\falcon9.vhdx" `
-    -NewVHDSizeBytes 20GB `
-    -SwitchName "Default Switch"
-
-# Configurar procesadores
-Set-VMProcessor -VMName "falcon9" -Count 2
-
-# Deshabilitar Secure Boot (importante para instalación)
-Set-VMFirmware -VMName "falcon9" -EnableSecureBoot Off
-
-# Adjuntar ISO de Debian
-Add-VMDvdDrive -VMName "falcon9" `
-    -Path "D:\iso\debian-13-amd64-netinst.iso"
-
-# Configurar boot desde DVD primero
-$dvd = Get-VMDvdDrive -VMName "falcon9"
-Set-VMFirmware -VMName "falcon9" -FirstBootDevice $dvd
-
-# Setear la red
+# 3. Establecer la red luego de instalar el sistema operativo
 Connect-VMNetworkAdapter -VMName "falcon9" -SwitchName "WiFi-Bridge"
+# -----------------------------------------------
 
 
 
 # -----------------------------------------------
-# Eliminar la maquina virtual
+# 4. Eliminar la maquina virtual
 Remove-VM -Name "falcon9" -Force
 # -----------------------------------------------
