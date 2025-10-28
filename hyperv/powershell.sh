@@ -1,55 +1,38 @@
 # Abrir PowerShell como Administrador
 
-# starship es el nombre de la VM que vamos a crear
+# falcon9 es el nombre de la VM que vamos a crear
 # -----------------------------------------------
 # Eliminar la maquina virtual
-Remove-VM -Name "starship" -Force
+Remove-VM -Name "falcon9" -Force
 # -----------------------------------------------
 
 
 # -----------------------------------------------
 # Crear VM Generación 2
-New-VM -Name "starship" `
+New-VM -Name "falcon9" `
     -MemoryStartupBytes 2GB `
     -Generation 2 `
-    -NewVHDPath "C:\Hyper-V\starship.vhdx" `
+    -NewVHDPath "C:\Hyper-V\falcon9.vhdx" `
     -NewVHDSizeBytes 20GB `
     -SwitchName "Default Switch"
 
 # Configurar procesadores
-Set-VMProcessor -VMName "starship" -Count 2
+Set-VMProcessor -VMName "falcon9" -Count 2
 
 # Deshabilitar Secure Boot (importante para instalación)
-Set-VMFirmware -VMName "starship" -EnableSecureBoot Off
+Set-VMFirmware -VMName "falcon9" -EnableSecureBoot Off
 
 # Adjuntar ISO de Debian
-Add-VMDvdDrive -VMName "starship" `
-    -Path "D:\iso\debian13-auto.iso"
+Add-VMDvdDrive -VMName "falcon9" `
+    -Path "D:\iso\debian-13-amd64-netinst.iso"
 
 # Configurar boot desde DVD primero
-$dvd = Get-VMDvdDrive -VMName "starship"
-Set-VMFirmware -VMName "starship" -FirstBootDevice $dvd
+$dvd = Get-VMDvdDrive -VMName "falcon9"
+Set-VMFirmware -VMName "falcon9" -FirstBootDevice $dvd
 
 
 
 # Configuracion de red
-# Crear switch interno (Host-Only)
-New-VMSwitch -Name "Kubernetes-Internal" -SwitchType Internal
-
-# Ver el adaptador creado
-Get-NetAdapter | Where-Object {$_.Name -like "*Kubernetes*"}
-
-# Configurar IP en el adaptador del host
-New-NetIPAddress -IPAddress 192.168.0.112 `
-    -PrefixLength 24 `
-    -InterfaceAlias "vEthernet (Kubernetes-Internal)"
-
-# Conectar VM al switch
-Connect-VMNetworkAdapter -VMName "starship" `
-    -SwitchName "Kubernetes-Internal"
-
-# Agregar segundo adaptador para internet (NAT)
-Add-VMNetworkAdapter -VMName "starship" `
-    -SwitchName "Default Switch"
-
-
+# Crear un switch externo en modo bridge usando el Wi-Fi
+# New-VMSwitch -Name "WiFi-Bridge" -NetAdapterName "Wi-Fi" -AllowManagementOS $true
+Connect-VMNetworkAdapter -VMName "falcon9" -SwitchName "WiFi-Bridge"
