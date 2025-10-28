@@ -1,56 +1,51 @@
-# Automatization of Debian
+# Automatización de instalación de Debian
 
-Paso 1. Instalamos la herramienta oscdimg.exe
-`https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install`
+## Definición
 
-Paso 2. Montamos la imagen original en PowerShell
+Instalación del pressed de debian13 mediante un servidor local.
 
-```bash
-Mount-DiskImage -ImagePath "D:\iso\debian-13-amd64-netinst.iso"
-```
+Este archivo preseed automatiza la instalación de Debian 13 (Trixie) para entornos como Hyper-V, VMware o hardware bare-metal. Configura lo siguiente:
 
-> Revisamos en el explorador de archivos y veremos que letra le ha asigando, en el caso práctino nos muestra la letra F:
+- **Localización y red**: Idioma inglés, teclado US, red DHCP con hostname predeterminado.
+- **Cuentas**: Desactiva el acceso root directo, crea un usuario administrador con sudo.
+- **Particionado**: Borra el disco, usa ext4 sin swap, y configura partición automática.
+- **Sistema base**: Instala el kernel genérico AMD64 y habilita firmware adicional.
+- **Repositorios y paquetes**: Activa secciones non-free/contrib, instala herramientas básicas y SSH, y habilita actualizaciones automáticas.
+- **Cargador de arranque**: Instala GRUB en el disco principal con inicio rápido.
+- **Comandos finales**: Ajusta SSH, habilita servicios esenciales, y realiza limpieza y actualizaciones post-instalación.
 
-Copiamos el contenido:
+## Pasos de instalación
 
-```bash
-xcopy F:\ D:\debian13-auto\build\ /E /H /K
-```
-
-Habilitamos los permisos de escritura:
-chmod -R +w build/
-
-Paso 3. Copiamos el archivo autoinstall.yaml dentro de D:\debian13-auto\build
-Luego editamos el archivo boot\grub\grub.cfg y agrega el parámetro:
-
-Debajo de D:\debian13-auto\build\boot\grub\grub.cfg
-
-Buscar esto:
+### 1. Tener python instalado.
 
 ```bash
-menuentry --hotkey=i 'Install' {
-    set background_color=black
-    linux    /install.amd/vmlinuz vga=788 --- quiet
-    initrd   /install.amd/initrd.gz
-}
+$ python --version
+Python 3.12.6
 ```
 
-Agregar debajo esto:
+### 2. Levantar el servidor local
 
 ```bash
-menuentry 'Automated Install (CD-ROM autoinstall.yaml)' {
-    set background_color=black
-    linux    /install.amd/vmlinuz auto=true priority=critical url=file:///cdrom/autoinstall.yaml vga=788 --- quiet
-    initrd   /install.amd/initrd.gz
-}
+cd /k8s-homelab/debian
+python -m http.server 8080
 ```
 
-Paso 4. Agreagmos variable de entorno para que powershell detecte oscdimg
+### 3. Entrar al menu grub en la instalación
 
-`C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\amd64\Oscdimg`
+En la siguiente imagen:
+![Debian installation menu](/docs/debian-installation-menu.png)
 
-Paso 4. Generamos la nueva iso
+Esribimos `c` para que nos muestre el menu del grub
+![Debian installation grub](/docs/debian-installation-grub.png)
+
+### 4. Escribir configuración
+
+> Nota: Cambiar a la ip al de la máquina host.
 
 ```bash
-oscdimg -m -o -u2 -udfver102 -bootdata:2#p0,e,bD:\debian13-auto\build\isolinux\isolinux.bin#pEF,e,bD:\debian13-auto\build\boot\grub\efi.img D:\debian13-auto\build D:\iso\debian13-auto-v2.iso
+linux /install.amd/vmlinuz auto=true preseed/url=http://192.168.0.116:8080/preseed.cfg priority=critical ---
+initrd /install.amd/initrd.gz
+boot
 ```
+
+Listo!
