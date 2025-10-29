@@ -1,0 +1,58 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# ================================================
+# Vagrantfile creación de máquina virtual
+# ================================================
+# Nota: "spacex" es el nombre de la VM que vamos a crear
+
+Vagrant.configure("2") do |config|
+
+  # 1. Box Base Temporal
+  config.vm.box = "generic/debian12"
+  config.vm.box_check_update = false
+
+  # 2. Definición y Configuración de la VM
+  config.vm.define "spacex" do |vm|
+    
+    vm.vm.hostname = "spacex"
+    
+    # --- Redes ---
+    vm.vm.network "private_network", type: "dhcp"
+    
+    vm.vm.provider "virtualbox" do |vb|
+      vb.name = "spacex"
+      
+      # Recursos
+      vb.memory = 2048   # 2 GB de RAM
+      vb.cpus   = 2      # 2 CPUs
+      vb.gui = false
+      
+      # Optimización y configuración avanzada
+      vb.customize ["modifyvm", :id, "--ioapic", "on"] # Habilitar IO-APIC
+      vb.customize ["modifyvm", :id, "--vram", "128"]  # Video RAM
+      vb.customize ["modifyvm", :id, "--audio", "none"]# Desactivar Audio
+      vb.customize ["modifyvm", :id, "--usb", "off"]   # Desactivar USB
+      vb.customize ["modifyvm", :id, "--firmware", "bios"] # Asegurar BIOS
+      
+      # --- Adjuntar ISO para Instalación ---
+      iso_path = "/Users/dalthon/Documents/iso/debian-13-amd64-netinst.iso"
+      
+      vb.customize ["storageattach", :id,
+                    "--storagectl", "IDE Controller",
+                    "--port", "0",
+                    "--device", "1",
+                    "--type", "dvddrive",
+                    "--medium", iso_path]
+                    
+      # Configurar el orden de arranque: DVD primero, luego Disco.
+      vb.customize ["modifyvm", :id, "--boot1", "dvd"]
+      vb.customize ["modifyvm", :id, "--boot2", "disk"]
+    end
+    
+    # --- Provisioning ---
+    vm.vm.provision "shell", inline: <<-SHELL
+      echo "VM creada con ISO adjunto."
+    SHELL
+  end
+end
