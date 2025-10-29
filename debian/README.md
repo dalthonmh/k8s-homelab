@@ -2,7 +2,7 @@
 
 ## Definición
 
-Instalación del pressed de debian13 mediante un servidor local.
+Instalación del preseed de debian13 mediante un servidor local.
 
 Este archivo preseed automatiza la instalación de Debian 13 (Trixie) para entornos como Hyper-V, VMware o hardware bare-metal. Configura lo siguiente:
 

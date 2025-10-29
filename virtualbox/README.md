@@ -1,8 +1,8 @@
 # Instalación de una máquina virtual en MacOS
 
-## Descarga de la imagen ISO de debian 13
+## Descarga de la imagen ISO
 
-Descargar la ISO del sistema operativo a instalar.
+Descargar el ISO del sistema operativo a instalar. En este caso será debian 13.
 
 - [debian](https://www.debian.org/distrib/netinst)
 
