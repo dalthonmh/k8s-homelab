@@ -21,6 +21,10 @@ VBoxManage modifyvm "spacex" \
   --cableconnected1 on \
   --nictype1 82540EM
 
+# Configuración de red NAT para IPv4
+VBoxManage natnetwork add --netname "NatNetwork" --network "192.168.0.0/24" --enable --dhcp on
+VBoxManage modifyvm "spacex" --nic1 natnetwork --nat-network1 "NatNetwork"
+
 # Crear y adjuntar disco duro virtual
 VBoxManage createhd --filename "$HOME/VirtualBox VMs/spacex/spacex.vdi" --size 20000 --format VDI
 VBoxManage storagectl "spacex" --name "SATA Controller" --add sata --controller IntelAhci

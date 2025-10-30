@@ -46,4 +46,8 @@ Levantamos el servidor local con python como indica el [README](/debian/README.m
 
 2. Luego selecciona: "Automated install"
 
-3. En la parte de archivos de configuracion ponemos: http://192.168.0.118:8090/preseed.cfg
+3. Se nos mostrará una ventana con la siguiente imagen:
+
+![Request preseed file](/docs/debian-installation-request-preseed.png)
+
+Escribimos la dirección del preseed: http://192.168.0.118:8090/preseed.cfg
