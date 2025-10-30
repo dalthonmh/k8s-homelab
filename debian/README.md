@@ -27,7 +27,7 @@ Python 3.12.6
 
 ```bash
 cd /k8s-homelab/debian
-python -m http.server 8080
+python -m http.server 8090
 ```
 
 ### 3. Entrar al menu grub en la instalación
@@ -43,7 +43,7 @@ Esribimos `c` para que nos muestre el menu del grub
 > Nota: Cambiar a la ip al de la máquina host.
 
 ```bash
-linux /install.amd/vmlinuz auto=true preseed/url=http://192.168.0.116:8080/preseed.cfg priority=critical ---
+linux /install.amd/vmlinuz auto=true preseed/url=http://192.168.0.118:8090/preseed.cfg priority=critical ---
 initrd /install.amd/initrd.gz
 boot
 ```
