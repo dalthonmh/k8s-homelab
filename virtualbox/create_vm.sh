@@ -4,7 +4,16 @@
 
 
 # -----------------------------------------------
-# 1. Crear la VM en VirtualBox
+# 1. Verificación del nombre del adaptador de red Wifi
+VBoxManage list bridgedifs | grep -i name
+# En el comando VBoxManage modifyvm "spacex", reemplazar en bridgeadapter1 el nombre del adaptador al de Wifi
+# Ejemplo: "--bridgeadapter1 "en0: Wi-Fi""
+# -----------------------------------------------
+
+
+
+# -----------------------------------------------
+# 2. Crear la VM en VirtualBox
 # Nota: "spacex" es el nombre de la VM que vamos a crear
 VBoxManage createvm --name "spacex" --ostype "Debian_64" --register
 
@@ -17,13 +26,10 @@ VBoxManage modifyvm "spacex" \
   --audio-driver none \
   --usb off \
   --firmware bios \
-  --nic1 nat \
-  --cableconnected1 on \
-  --nictype1 82540EM
-
-# Configuración de red NAT para IPv4
-VBoxManage natnetwork add --netname "NatNetwork" --network "192.168.0.0/24" --enable --dhcp on
-VBoxManage modifyvm "spacex" --nic1 natnetwork --nat-network1 "NatNetwork"
+  --nic1 bridged \
+  --bridgeadapter1 "en0: Wi-Fi" \
+  --nictype1 82540EM \
+  --cableconnected1 on
 
 # Crear y adjuntar disco duro virtual
 VBoxManage createhd --filename "$HOME/VirtualBox VMs/spacex/spacex.vdi" --size 20000 --format VDI
@@ -44,7 +50,7 @@ VBoxManage startvm "spacex" --type gui
 
 
 # -----------------------------------------------
-# 2. Eliminar la maquina virtual
+# 3. Eliminar la maquina virtual
 VBoxManage controlvm "spacex" poweroff
 VBoxManage unregistervm "spacex" --delete
 # -----------------------------------------------
