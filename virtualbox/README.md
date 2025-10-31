@@ -76,7 +76,7 @@ Después de instalar el sistema operativo, configura una dirección IP estática
    sudo vim /etc/network/interfaces
    ```
 
-2. Actualiza el archivo con la siguiente configuración, reemplazando `192.168.0.110` con la dirección IP deseada:
+2. Actualiza el archivo con la siguiente configuración, reemplazando `192.168.0.200` con la dirección IP deseada:
 
    ```sh
    # This file describes the network interfaces available on your system
@@ -91,7 +91,7 @@ Después de instalar el sistema operativo, configura una dirección IP estática
    # The primary network interface
    auto enp0s3
    iface enp0s3 inet static
-       address 192.168.0.110
+       address 192.168.0.200
        netmask 255.255.255.0
        gateway 192.168.0.1
        dns-nameservers 8.8.8.8 1.1.1.1

@@ -67,7 +67,7 @@ Dentro del sistema operativo actualizamos esta configuración
 vim /etc/network/interfaces
 ```
 
-Actualizamos a la siguiente configuración donde 192.168.0.112 es la ip que colocaremos
+Actualizamos a la siguiente configuración donde 192.168.0.202 es la ip que colocaremos
 
 ```sh
 # This file describes the network interfaces available on your system
@@ -82,7 +82,7 @@ iface lo inet loopback
 # The primary network interface
 auto eth0
 iface eth0 inet static
-    address 192.168.0.112
+    address 192.168.0.202
     netmask 255.255.255.0
     gateway 192.168.0.1
     dns-nameservers 8.8.8.8 1.1.1.1

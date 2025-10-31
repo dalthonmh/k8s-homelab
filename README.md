@@ -30,7 +30,7 @@ Este repositorio contiene scripts, configuraciones y documentación para configu
          ┌────▼───┐ ┌────▼───┐ ┌───▼────┐
          │spacex  │ │starship│ │falcon9 │
          │(master)│ │(worker)│ │(worker)│
-         │  .110  │ │  .111  │ │  .112  │
+         │  .200  │ │  .201  │ │  .202  │
          └────────┘ └────────┘ └────────┘
 ```
 
@@ -47,15 +47,15 @@ Este repositorio contiene scripts, configuraciones y documentación para configu
 
 | Hostname     | Rol                    | IP            | RAM | vCPU | Hypervisor   | Host    |
 | ------------ | ---------------------- | ------------- | --- | ---- | ------------ | ------- |
-| **spacex**   | Control Plane (Master) | 192.168.0.110 | 2GB | 2    | VirtualBox   | macOS   |
-| **starship** | Worker Node            | 192.168.0.111 | 2GB | 2    | Hyper-V Gen2 | Windows |
-| **falcon9**  | Worker Node            | 192.168.0.112 | 2GB | 2    | Hyper-V Gen2 | Windows |
+| **spacex**   | Control Plane (Master) | 192.168.0.200 | 2GB | 2    | VirtualBox   | macOS   |
+| **starship** | Worker Node            | 192.168.0.201 | 2GB | 2    | Hyper-V Gen2 | Windows |
+| **falcon9**  | Worker Node            | 192.168.0.202 | 2GB | 2    | Hyper-V Gen2 | Windows |
 
 ### /etc/hosts en todos los nodos
 
 ```bash
 # Agregar en /etc/hosts de cada nodo
-192.168.0.110   spacex      k8s-master
-192.168.0.111   starship    k8s-worker1
-192.168.0.112   falcon9     k8s-worker2
+192.168.0.200   spacex      k8s-master
+192.168.0.201   starship    k8s-worker1
+192.168.0.202   falcon9     k8s-worker2
 ```
