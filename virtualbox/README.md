@@ -9,7 +9,7 @@ Descarga la imagen ISO del sistema operativo Debian 13 desde el siguiente enlace
 - [Debian Netinst ISO](https://www.debian.org/distrib/netinst)
 
 > **Nota:** Guarda el archivo ISO en una ubicación accesible, como:  
-> `/Users/dalthon/Documents/iso/debian-13-amd64-netinst.iso`.
+> /Users/dalthon/Documents/iso/debian-13-amd64-netinst.iso.
 
 ## 2. Instalación de VirtualBox
 
@@ -52,7 +52,7 @@ Para realizar una instalación automatizada usando un archivo preseed:
 1. Levanta un servidor local para servir el archivo `preseed.cfg`
 
    ```bash
-   cd /path/to/preseed
+   cd /k8s-homelab/debian
    python3 -m http.server 8090
    ```
 
