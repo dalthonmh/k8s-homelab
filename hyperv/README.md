@@ -1,102 +1,57 @@
-# Instalación de máquinas virtuales en Hyper-V
+# Instalación de Máquinas Virtuales en Hyper-V
 
-## Pasos previos:
+## 1. Requisitos Previos
 
-Habilitar Hyper-V en Windows, esto se logra de la siguiente manera:
+1. **Habilitar Hyper-V en Windows**:
 
-Entrar a:
+   - Ve a: Panel de control → Programas → Programas y características → Activar o desactivar las características de Windows.
+   - Activa la casilla de Hyper-V y reinicia el equipo.
 
-1. Panel de control
-2. Programas
-3. Programas y características
-4. Activar o desactivar las características de Windows
-5. Habilitamos el check para Hyper-V
-6. Reiniciamos el equipo
+2. **Descargar la ISO del sistema operativo**:
+   - [Debian Netinst ISO](https://www.debian.org/distrib/netinst)
 
-Descargar la ISO del sistema operativo a instalar.
+> **Nota:** Guarda el archivo ISO en una ubicación accesible, como:  
+> D:\iso\debian-13-amd64-netinst.iso.
 
-- [debian](https://www.debian.org/distrib/netinst)
+## 2. Configuración de la Máquina Virtual
 
-## Recursos a considerar
+- **Nombre**: `falcon9`
+- **Generación**: 2
+- **Memoria**: 2 GB de RAM
+- **Procesadores**: 2 núcleos
+- **Disco Duro**: 20 GB (VHDX)
+- **Firmware**: Secure Boot deshabilitado
+- **ISO adjunto**: Debian 13 (Netinst)
+- **Orden de arranque**: DVD primero
+- **Red**: Conexión a un switch externo en modo bridge (`WiFi-Bridge`)
 
-Definimos la cantidad de recursos a usar de acuerdo a la capacidad del equipo.
+## 3. Pasos para Crear la Máquina Virtual
 
-- Nombre: falcon9
-- Generación: 2
-- Memoria: 2 GB de RAM
-- Procesadores: 2 núcleos
-- Disco duro: 20 GB (VHDX)
-- Firmware: Secure Boot deshabilitado
-- ISO adjunto: Debian 13 (Netinst)
-- Orden de arranque: DVD primero
-- Red: Conexión a un switch externo en modo bridge (WiFi-Bridge)
+1. Abre PowerShell como Administrador.
+2. Ejecuta el archivo [powershell.ps1](/hyperv/powershell.ps1) para automatizar la creación de la máquina virtual.
 
-## Ejecutar los comandos
+## 4. Configuración de Red
 
-En el archivo powershell.ps1 ejecutamos los comandos para `1. Crear VM Generación 2`
+### 4.1. Crear un Switch Externo
 
-## Configuración de la red
+Para conectar la máquina virtual a la red, crea un switch externo en modo bridge:
 
-Configuraremos la red para poner una IP estática al sistema operativo.
-
-### Mediante comandos
-
-Crear un switch externo en modo bridge usando el Wi-Fi
-
-```ps1
+```powershell
 New-VMSwitch -Name "WiFi-Bridge" -NetAdapterName "Wi-Fi" -AllowManagementOS $true
 ```
 
-### Configuración asistida gráficamente (opcional)
+### 4.2. Configuración Gráfica (Opcional)
 
-1. Entramos al Administrador de Hyper-V
-2. Entramos a la configuración de comnutadores virtuales
-3. Creamos un nuevo conmutador de tipo Externo
-4. De nombre le ponemos "WiFi-Bridge"
-5. En tipo de conexión seleccionamos la que contenga "Wi-Fi Adapter"
+1. Abre el Administrador de Hyper-V.
+2. Ve a la configuración de conmutadores virtuales.
+3. Crea un nuevo conmutador de tipo Externo.
+4. Asigna el nombre `WiFi-Bridge`.
+5. Selecciona el adaptador de red que contenga "Wi-Fi Adapter".
 
-Luego de instalar el sistema operativo para que tenga IP estática, configuraremos lo siguiente:
+### 4.3. Conectar la Máquina Virtual al Switch
 
-```ps1
+Después de crear el switch, conecta la máquina virtual:
+
+```powershell
 Connect-VMNetworkAdapter -VMName "falcon9" -SwitchName "WiFi-Bridge"
-```
-
-Dentro del sistema operativo actualizamos esta configuración
-
-```sh
-vim /etc/network/interfaces
-```
-
-Actualizamos a la siguiente configuración donde 192.168.0.202 es la ip que colocaremos
-
-```sh
-# This file describes the network interfaces available on your system
-# and how to activate them. For more information, see interfaces(5).
-
-source /etc/network/interfaces.d/*
-
-# The loopback network interface
-auto lo
-iface lo inet loopback
-
-# The primary network interface
-auto eth0
-iface eth0 inet static
-    address 192.168.0.202
-    netmask 255.255.255.0
-    gateway 192.168.0.1
-    dns-nameservers 8.8.8.8 1.1.1.1
-```
-
-Actualizamos la configuración
-
-```sh
-sudo systemctl restart networking
-```
-
-Cambiamos el nombre del nodo
-
-```sh
-sudo hostnamectl set-hostname falcon9
-hostname
 ```

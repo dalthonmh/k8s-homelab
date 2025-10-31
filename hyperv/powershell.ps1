@@ -32,6 +32,8 @@ Set-VMFirmware -VMName "crewdragon" -FirstBootDevice $dvd
 
 # -----------------------------------------------
 # 2. Configuracion de red
+# Listar switches disponibles
+Get-VMSwitch
 # Crear un switch externo en modo bridge usando el Wi-Fi
 New-VMSwitch -Name "WiFi-Bridge" -NetAdapterName "Wi-Fi" -AllowManagementOS $true
 # -----------------------------------------------
@@ -40,12 +42,12 @@ New-VMSwitch -Name "WiFi-Bridge" -NetAdapterName "Wi-Fi" -AllowManagementOS $tru
 
 # -----------------------------------------------
 # 3. Establecer la red luego de instalar el sistema operativo
-Connect-VMNetworkAdapter -VMName "falcon9" -SwitchName "WiFi-Bridge"
+Connect-VMNetworkAdapter -VMName "crewdragon" -SwitchName "WiFi-Bridge"
 # -----------------------------------------------
 
 
 
 # -----------------------------------------------
 # 4. Eliminar la maquina virtual
-Remove-VM -Name "falcon9" -Force
+Remove-VM -Name "crewdragon" -Force
 # -----------------------------------------------
