@@ -1,0 +1,19 @@
+---
+- name: Configuración básica de servidores Debian
+  hosts: debian
+  become: yes
+
+  tasks:
+    - name: Actualizar cache de paquetes (válido por 1 hora)
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Instalar paquetes básicos
+      apt:
+        name:
+          - curl
+          - wget
+          - vim
+        state: present
+        update_cache: yes
