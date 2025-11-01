@@ -83,3 +83,17 @@ Host 192.168.0.202
     IdentityFile ~/.ssh/id_ansible_mac_debian
     IdentitiesOnly yes
 ```
+
+## 5. Comandos básicos de Ansible
+
+Probar conexión con las VMs
+
+```bash
+ansible -i hosts.ini debian -m ping
+```
+
+Ejecución del playbook:
+
+```bash
+ansible-playbook -i hosts.ini primer-playbook.yml
+```
