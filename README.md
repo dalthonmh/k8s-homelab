@@ -1,6 +1,6 @@
 [![Kubernetes](https://img.shields.io/badge/kubernetes-v1.34-blue.svg)](https://kubernetes.io)
 [![Debian](https://img.shields.io/badge/debian-13-red.svg)](https://www.debian.org)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 # Kubernetes Homelab Setup
 
