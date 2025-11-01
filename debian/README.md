@@ -84,3 +84,23 @@ Para cambiar el nombre del nodo (hostname):
 sudo hostnamectl set-hostname <nuevo-nombre>
 hostname
 ```
+
+## 3. Configurar sudo sin contraseña en las VMs Debian
+
+Cambiamos el editor por defecto por uno mas cómodo:
+
+```bash
+sudo update-alternatives --config editor
+```
+
+En cada máquina virtual Debian, editar el archivo sudoers:
+
+```bash
+sudo visudo
+```
+
+Agrega al final del archivo (reemplaza `superadmin` con tu usuario real):
+
+```bash
+superadmin ALL=(ALL) NOPASSWD:ALL
+```
