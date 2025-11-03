@@ -26,3 +26,10 @@
   import_tasks: post_installation.yml
   tags:
     - post
+
+# Step 5: Copy scripts to master node
+- name: Copy scripts to master node
+  import_tasks: setup_master.yml
+  when: inventory_hostname in groups['master']
+  tags:
+    - copy-master
