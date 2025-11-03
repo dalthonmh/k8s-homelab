@@ -1,0 +1,12 @@
+---
+- name: Install prerequisites
+  include_tasks: prerequisites.yaml
+
+- name: Install and configure containerd
+  include_tasks: containerd.yml
+
+- name: Install Kubernetes tools
+  include_tasks: install_k8s.yml
+
+- name: Post installation tasks
+  include_tasks: post_installation.yaml
