@@ -1,4 +1,8 @@
 ---
-- hosts: all
+- name: Kubernetes node setup
+  hosts: all
+  become: true
+  gather_facts: true
+
   roles:
-    - kubernetes
+    - role: kubernetes

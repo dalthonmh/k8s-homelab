@@ -1,0 +1,42 @@
+---
+# tasks file: roles/kubernetes/tasks/post_installation.yml
+
+# Step 1. Configure kubectl aliases and autocompletion
+- name: Add kubectl aliases and autocompletion for multiple users
+  blockinfile:
+    path: "/home/{{ item }}/.bashrc"
+    create: true
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: kubectl settings"
+    block: |
+      # Kubernetes command shortcuts
+      alias k=kubectl
+      source <(kubectl completion bash)
+      complete -o default -F __start_kubectl k
+
+      # Dry-run shortcut
+      export do="--dry-run=client -o yaml"
+  become: true
+  loop:
+    - superadmin
+    - root
+
+# Step 2. Configure Vim editor preferences
+- name: Configure Vim settings for multiple users
+  blockinfile:
+    path: "/home/{{ item }}/.vimrc"
+    create: true
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: vim settings"
+    block: |
+      set ts=2
+      set sts=2
+      set sw=2
+      set et
+      set ai
+  become: true
+  loop:
+    - superadmin
+    - root

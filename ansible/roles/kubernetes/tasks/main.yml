@@ -1,12 +1,28 @@
 ---
+# roles/kubernetes/tasks/main.yml
+
+# Step 1: System prerequisites
 - name: Install prerequisites
-  include_tasks: prerequisites.yaml
+  import_tasks: prerequisites.yml
+  tags:
+    - prereqs
 
+# Step 2: Container runtime setup (containerd)
 - name: Install and configure containerd
-  include_tasks: containerd.yml
+  import_tasks: containerd.yml
+  tags:
+    - containerd
+    - runtime
 
+# Step 3: Install Kubernetes core binaries (kubeadm, kubelet, kubectl)
 - name: Install Kubernetes tools
-  include_tasks: install_k8s.yml
+  import_tasks: install_k8s.yml
+  tags:
+    - k8s
+    - kube-tools
 
+# Step 4: Post-installation configuration (sysctl tweaks, service restarts, etc.)
 - name: Post installation tasks
-  include_tasks: post_installation.yaml
+  import_tasks: post_installation.yml
+  tags:
+    - post

@@ -95,5 +95,5 @@ ansible -i hosts.ini debian -m ping
 Ejecución del playbook:
 
 ```bash
-ansible-playbook -i hosts.ini primer-playbook.yml
+ansible-playbook -i hosts.ini kube-play.yml
 ```
