@@ -29,13 +29,14 @@
     create: true
     owner: "{{ item }}"
     group: "{{ item }}"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK: vim settings"
+    marker: '" {mark} ANSIBLE MANAGED BLOCK: vim settings'
     block: |
-      set ts=2
-      set sts=2
-      set sw=2
-      set et
-      set ai
+      set tabstop=2           " Ancho visual de un carácter TAB (8 por defecto)
+      set softtabstop=2       " Número de espacios que se insertan al presionar TAB
+      set shiftwidth=2        " Número de espacios usados para auto-indentación
+      set expandtab           " Convierte TABs en espacios
+      set autoindent          " Mantiene la indentación de la línea anterior
+      syntax on               " Habilita el resaltado de sintaxis
   become: true
   loop:
     - superadmin
