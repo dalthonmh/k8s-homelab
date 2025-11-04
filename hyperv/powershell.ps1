@@ -5,34 +5,31 @@
 
 # -----------------------------------------------
 # 1. Crear VM Generación 2
-# Nota: crewdragon es el nombre de la VM que vamos a crear
-New-VM -Name "crewdragon" `
+# Nota: newglenn es el nombre de la VM que vamos a crear
+New-VM -Name "newglenn" `
     -MemoryStartupBytes 2GB `
     -Generation 2 `
-    -NewVHDPath "C:\Hyper-V\crewdragon.vhdx" `
+    -NewVHDPath "C:\Hyper-V\newglenn.vhdx" `
     -NewVHDSizeBytes 20GB `
     -SwitchName "Default Switch"
 
 # Desactivar memoria dinámica
-Set-VMMemory -VMName "crewdragon" `
-    -DynamicMemoryEnabled $false `
-    -StartupBytes 2GB `
-    -MinimumBytes 2GB `
-    -MaximumBytes 2GB
+Set-VMMemory -VMName "newglenn" `
+    -DynamicMemoryEnabled $false
 
 # Configurar procesadores
-Set-VMProcessor -VMName "crewdragon" -Count 2
+Set-VMProcessor -VMName "newglenn" -Count 2
 
 # Deshabilitar Secure Boot (importante para instalación)
-Set-VMFirmware -VMName "crewdragon" -EnableSecureBoot Off
+Set-VMFirmware -VMName "newglenn" -EnableSecureBoot Off
 
 # Adjuntar ISO de Debian
-Add-VMDvdDrive -VMName "crewdragon" `
+Add-VMDvdDrive -VMName "newglenn" `
     -Path "D:\iso\debian-13-amd64-netinst.iso"
 
 # Configurar boot desde DVD primero
-$dvd = Get-VMDvdDrive -VMName "crewdragon"
-Set-VMFirmware -VMName "crewdragon" -FirstBootDevice $dvd
+$dvd = Get-VMDvdDrive -VMName "newglenn"
+Set-VMFirmware -VMName "newglenn" -FirstBootDevice $dvd
 # -----------------------------------------------
 
 
@@ -49,12 +46,12 @@ New-VMSwitch -Name "WiFi-Bridge" -NetAdapterName "Wi-Fi" -AllowManagementOS $tru
 
 # -----------------------------------------------
 # 3. Establecer la red luego de instalar el sistema operativo
-Connect-VMNetworkAdapter -VMName "crewdragon" -SwitchName "WiFi-Bridge"
+Connect-VMNetworkAdapter -VMName "newglenn" -SwitchName "WiFi-Bridge"
 # -----------------------------------------------
 
 
 
 # -----------------------------------------------
 # 4. Eliminar la maquina virtual
-Remove-VM -Name "crewdragon" -Force
+Remove-VM -Name "newglenn" -Force
 # -----------------------------------------------
