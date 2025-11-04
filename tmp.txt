@@ -1,0 +1,19 @@
+
+# Agregar en /etc/hosts de cada nodo
+cat <<EOF | sudo tee -a /etc/hosts
+127.0.0.1   bluemoon
+
+192.168.0.200 controlmision
+192.168.0.201 starship
+192.168.0.202 newgleen
+192.168.0.203 crewdragon
+192.168.0.204 soyuz
+192.168.0.205 bluemoon
+EOF
+
+
+
+
+sudo vim set-static-ip.sh
+sudo chmod +x set-static-ip.sh
+sudo ./set-static-ip.sh 192.168.0.205 bluemoon

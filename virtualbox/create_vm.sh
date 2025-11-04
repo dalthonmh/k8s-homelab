@@ -2,6 +2,7 @@
 # Creation: 30/10/2025
 # Author: dalthonmh
 
+# Nota: "spacex" es el nombre de la VM que vamos a crear
 
 # -----------------------------------------------
 # 1. Verificación del nombre del adaptador de red Wifi
@@ -14,7 +15,6 @@ VBoxManage list bridgedifs | grep -i name
 
 # -----------------------------------------------
 # 2. Crear la VM en VirtualBox
-# Nota: "spacex" es el nombre de la VM que vamos a crear
 VBoxManage createvm --name "spacex" --ostype "Debian_64" --register
 
 # Configuración general
