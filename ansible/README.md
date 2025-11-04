@@ -89,7 +89,7 @@ Host 192.168.0.202
 Probar conexión con las VMs
 
 ```bash
-ansible -i hosts.ini debian -m ping
+ansible -i hosts.ini all -m ping
 ```
 
 Ejecución del playbook:
