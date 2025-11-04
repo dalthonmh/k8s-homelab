@@ -22,6 +22,20 @@
   command: systemctl daemon-reload
   when: fstab_swap_disabled.changed
 
+- name: Mask all active systemd swap units
+  shell: |
+    for unit in $(systemctl list-unit-files | grep '\.swap' | awk '{print $1}'); do
+      systemctl mask "$unit" || true
+    done
+  become: true
+
+- name: Mask swap.target to prevent reactivation
+  systemd:
+    name: swap.target
+    masked: yes
+    enabled: no
+  become: true
+
 # Step 2: Enable networking prerequisites for Kubernetes
 - name: Load kernel modules for Kubernetes
   copy:

@@ -10,7 +10,7 @@ Este archivo preseed automatiza la instalación de Debian 13 (Trixie) para entor
 - **Sistema Base**: Instala el kernel genérico AMD64 y habilita firmware adicional.
 - **Repositorios y Paquetes**: Activa secciones non-free/contrib, instala herramientas básicas y SSH, y habilita actualizaciones automáticas.
 - **Cargador de Arranque**: Instala GRUB en el disco principal con inicio rápido.
-- **Comandos Finales**: Ajusta SSH, habilita servicios esenciales, y realiza limpieza y actualizaciones post-instalación.
+- **Comandos Finales**: Ajusta SSH, habilita servicios esenciales como memoria Swap, y realiza limpieza y actualizaciones post-instalación.
 
 ## 2. Pasos para la Instalación
 
