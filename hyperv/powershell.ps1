@@ -13,6 +13,13 @@ New-VM -Name "crewdragon" `
     -NewVHDSizeBytes 20GB `
     -SwitchName "Default Switch"
 
+# Desactivar memoria dinámica
+Set-VMMemory -VMName "crewdragon" `
+    -DynamicMemoryEnabled $false `
+    -StartupBytes 2GB `
+    -MinimumBytes 2GB `
+    -MaximumBytes 2GB
+
 # Configurar procesadores
 Set-VMProcessor -VMName "crewdragon" -Count 2
 
