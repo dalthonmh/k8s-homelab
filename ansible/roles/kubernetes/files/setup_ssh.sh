@@ -1,4 +1,22 @@
 #!/bin/bash
+# setup_ssh.sh
+# Created: 2025-11-04, dalthonmh
+# Description:
+# This script sets up SSH key-based access from the master node to worker nodes
+# in a Kubernetes cluster. It generates an SSH key (if missing), copies it to
+# the worker nodes, and configures the SSH client for seamless access.
+
+# Requirements:
+# - Run this script as the "superadmin" user (do NOT use sudo).
+# - Ensure the "hosts.ini" file is in the same directory as this script.
+
+# Notes:
+# - You will be prompted to confirm the SSH connection:
+#   "Are you sure you want to continue connecting (yes/no/[fingerprint])?": yes
+# - Enter the "superadmin" password for each worker node when prompted.
+
+# Usage:
+#   ./setup_ssh.sh
 
 # Variables
 SSH_KEY_NAME="id_ansible_master_debian"
@@ -6,9 +24,9 @@ SSH_DIR="$HOME/.ssh"
 INVENTORY_FILE="./hosts.ini"
 USER="superadmin"
 
-# Función para obtener las IPs de los nodos trabajadores desde hosts.ini
+# Get worker node IPs from hosts.ini
 get_workers() {
-  awk '/\[workers\]/{flag=1; next} /\[/{flag=0} flag && NF' "$INVENTORY_FILE" | awk -F'=' '{print $2}'
+  awk '/\[workers\]/{flag=1; next} /\[/{flag=0} flag && NF' "$INVENTORY_FILE" | awk '{print $2}' | awk -F'=' '{print $2}'
 }
 
 # Create SSH key if it does not exist

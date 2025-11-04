@@ -13,7 +13,17 @@ EOF
 
 
 
-
+===============
 sudo vim set-static-ip.sh
 sudo chmod +x set-static-ip.sh
 sudo ./set-static-ip.sh 192.168.0.205 bluemoon
+
+
+
+===============
+sudo kubeadm reset -f
+sudo iptables -F
+sudo iptables -t nat -F
+sudo iptables -t mangle -F
+sudo iptables -X
+sudo systemctl restart kubelet
