@@ -1,44 +1,44 @@
-# Instalación de una máquina virtual en MacOS
+# Installing a Virtual Machine on macOS
 
-Este documento describe los pasos para crear y configurar una máquina virtual en VirtualBox con Debian 13 como sistema operativo.
+This document describes the steps to create and configure a virtual machine in VirtualBox with Debian 13 as the operating system.
 
-## 1. Descarga de la imagen ISO
+## 1. Download the ISO Image
 
-Descarga la imagen ISO del sistema operativo Debian 13 desde el siguiente enlace:
+Download the ISO image for Debian 13 from the following link:
 
 - [Debian Netinst ISO](https://www.debian.org/distrib/netinst)
 
-> **Nota:** Guarda el archivo ISO en una ubicación accesible, como:  
-> /Users/dalthon/Documents/iso/debian-13-amd64-netinst.iso.
+> **Note:** Save the ISO file in an accessible location, such as:  
+> `/Users/dalthon/Documents/iso/debian-13-amd64-netinst.iso`.
 
-## 2. Instalación de VirtualBox
+## 2. Install VirtualBox
 
-Instala VirtualBox en tu sistema usando Homebrew:
+Install VirtualBox on your system using Homebrew:
 
 ```bash
 brew update
 brew install --cask virtualbox
 ```
 
-Verifica que VirtualBox se haya instalado correctamente:
+Verify that VirtualBox has been installed correctly:
 
 ```bash
 VBoxManage --version
 ```
 
-## 3. Crear y Configurar la Máquina Virtual
+## 3. Create and Configure the Virtual Machine
 
-Ejecuta los comandos del archivo [create_vm.sh](/virtualbox/create_vm.sh) para crear y configurar la máquina virtual. Asegúrate de que el archivo ISO esté en la ruta especificada.
+Run the commands in the create_vm.sh file to create and configure the virtual machine. Ensure the ISO file is located in the specified path.
 
-Comandos básicos:
+Basic commands:
 
-### 3.1. Iniciar la máquina virtual
+### 3.1. Start the Virtual Machine
 
 ```bash
 VBoxManage startvm "spacex" --type gui
 ```
 
-### 3.2. Eliminar la maquina virtual
+### 3.2. Delete the Virtual Machine
 
 ```bash
 VBoxManage controlvm "spacex" poweroff

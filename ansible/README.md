@@ -1,23 +1,23 @@
-# Configuración del cluster de Kubernetes
+# Kubernetes Cluster Configuration
 
-Este documento describe los pasos necesarios para configurar un clúster de Kubernetes utilizando Ansible y máquinas virtuales Debian.
+This document describes the steps required to configure a Kubernetes cluster using Ansible and Debian virtual machines.
 
-## 1. Instalación de Ansible
+## 1. Installing Ansible
 
-Instalaremos Ansible en nuestro equipo para gestionar las máquinas virtuales.
+We will install Ansible on our machine to manage the virtual machines.
 
-- En macOS:
+- On macOS:
 
 ```bash
 brew install ansible
 ansible --version
 ```
 
-> Nota: Asegúrate de que los servidores Debian tengan Python instalado y el servicio SSH habilitado.
+> Note: Ensure that the Debian servers have Python installed and the SSH service enabled.
 
-## 2. Configuración del archivo /etc/hosts
+## 2. Configuring the /etc/hosts File
 
-Para que los nodos del clúster puedan comunicarse entre sí, agrega las siguientes entradas al archivo /etc/hosts en cada máquina Debian:
+To allow the cluster nodes to communicate with each other, add the following entries to the `/etc/hosts` file on each Debian machine:
 
 ```bash
 cat <<EOF | sudo tee -a /etc/hosts
@@ -27,22 +27,22 @@ cat <<EOF | sudo tee -a /etc/hosts
 EOF
 ```
 
-Esto asignará nombres a las direcciones IP de los nodos, facilitando su identificación.
+This will assign names to the IP addresses of the nodes, making them easier to identify.
 
-## 3. Configurar acceso SSH
+## 3. Configure SSH Access
 
-Para que Ansible pueda gestionar los nodos, configuraremos el acceso SSH sin contraseña desde el nodo de control MacBook.
+To allow Ansible to manage the nodes, we will configure passwordless SSH access from the control node (MacBook).
 
-### 3.1. Generar una clave SSH:
+### 3.1. Generate an SSH Key:
 
 ```bash
 cd ~/.ssh
 ssh-keygen -t ed25519 -C "ansible@mac"
 ```
 
-> Nota: Cuando se te pida un nombre para la clave, se puede usar algo como: id_ansible_mac_debian.
+> Note: When prompted for a name for the key, you can use something like `id_ansible_mac_debian`.
 
-### 3.2. Copiar la clave pública a los nodos Debian
+### 3.2. Copy the Public Key to the Debian Nodes
 
 ```bash
 ssh-copy-id -i ~/.ssh/id_ansible_mac_debian.pub superadmin@192.168.0.200
@@ -50,49 +50,52 @@ ssh-copy-id -i ~/.ssh/id_ansible_mac_debian.pub superadmin@192.168.0.201
 ssh-copy-id -i ~/.ssh/id_ansible_mac_debian.pub superadmin@192.168.0.202
 ```
 
-Esto permitirá que desde el host (MacBook) se conecte a los nodos sin necesidad de ingresar una contraseña.
+This will allow the host (MacBook) to connect to the nodes without needing to enter a password.
 
-## 4. Configuración del Archivo ~/.ssh/config
+## 4. Configuring the ~/.ssh/config File
 
-Si tenemos múltiples claves SSH en la MacBook, puedes configurar el archivo ~/.ssh/config para que Ansible use automáticamente la clave correcta al conectarse a cada nodo.
+If you have multiple SSH keys on the MacBook, you can configure the `~/.ssh/config` file so that Ansible automatically uses the correct key when connecting to each node.
 
-### 4.1. Abre el archivo de configuración SSH:
+### 4.1. Open the SSH Configuration File:
 
 ```bash
 vim ~/.ssh/config
 ```
 
-### 4.2. Agrega las siguientes configuraciones para cada nodo:
+### 4.2. Add the Following Configurations for Each Node:
 
 ```bash
-# Nodo k8s-master (spacex)
+# k8s-master node (spacex)
+
 Host 192.168.0.200
-    User superadmin
-    IdentityFile ~/.ssh/id_ansible_mac_debian
-    IdentitiesOnly yes
+User superadmin
+IdentityFile ~/.ssh/id_ansible_mac_debian
+IdentitiesOnly yes
 
-# Nodo k8s-worker1 (crewdragon)
+# k8s-worker1 node (crewdragon)
+
 Host 192.168.0.201
-    User superadmin
-    IdentityFile ~/.ssh/id_ansible_mac_debian
-    IdentitiesOnly yes
+User superadmin
+IdentityFile ~/.ssh/id_ansible_mac_debian
+IdentitiesOnly yes
 
-# Nodo k8s-worker2 (falcon9)
+# k8s-worker2 node (falcon9)
+
 Host 192.168.0.202
-    User superadmin
-    IdentityFile ~/.ssh/id_ansible_mac_debian
-    IdentitiesOnly yes
+User superadmin
+IdentityFile ~/.ssh/id_ansible_mac_debian
+IdentitiesOnly yes
 ```
 
-## 5. Comandos básicos de Ansible
+## 5. Basic Ansible Commands
 
-Probar conexión con las VMs
+Test the connection with the VMs:
 
 ```bash
 ansible -i hosts.ini all -m ping
 ```
 
-Ejecución del playbook:
+Run the playbook:
 
 ```bash
 ansible-playbook -i hosts.ini kube-play.yml

@@ -1,56 +1,56 @@
-# Instalación de Máquinas Virtuales en Hyper-V
+# Installing Virtual Machines on Hyper-V
 
-## 1. Requisitos Previos
+## 1. Prerequisites
 
-1. **Habilitar Hyper-V en Windows**:
+1. **Enable Hyper-V on Windows**:
 
-   - Ve a: Panel de control → Programas → Programas y características → Activar o desactivar las características de Windows.
-   - Activa la casilla de Hyper-V y reinicia el equipo.
+   - Go to: Control Panel → Programs → Programs and Features → Turn Windows features on or off.
+   - Check the Hyper-V box and restart your computer.
 
-2. **Descargar la ISO del sistema operativo**:
+2. **Download the OS ISO**:
    - [Debian Netinst ISO](https://www.debian.org/distrib/netinst)
 
-> **Nota:** Guarda el archivo ISO en una ubicación accesible, como:  
-> D:\iso\debian-13-amd64-netinst.iso.
+> **Note:** Save the ISO file in an accessible location, such as:  
+> `D:\iso\debian-13-amd64-netinst.iso`.
 
-## 2. Configuración de la Máquina Virtual
+## 2. Virtual Machine Configuration
 
-- **Nombre**: `falcon9`
-- **Generación**: 2
-- **Memoria**: 2 GB de RAM
-- **Procesadores**: 2 núcleos
-- **Disco Duro**: 20 GB (VHDX)
-- **Firmware**: Secure Boot deshabilitado
-- **ISO adjunto**: Debian 13 (Netinst)
-- **Orden de arranque**: DVD primero
-- **Red**: Conexión a un switch externo en modo bridge (`WiFi-Bridge`)
+- **Name**: `falcon9`
+- **Generation**: 2
+- **Memory**: 2 GB RAM
+- **Processors**: 2 cores
+- **Hard Disk**: 20 GB (VHDX)
+- **Firmware**: Secure Boot disabled
+- **Attached ISO**: Debian 13 (Netinst)
+- **Boot Order**: DVD first
+- **Network**: Connected to an external switch in bridge mode (`WiFi-Bridge`)
 
-## 3. Pasos para Crear la Máquina Virtual
+## 3. Steps to Create the Virtual Machine
 
-1. Abre PowerShell como Administrador.
-2. Ejecuta el archivo [powershell.ps1](/hyperv/powershell.ps1) para automatizar la creación de la máquina virtual.
+1. Open PowerShell as Administrator.
+2. Run the [powershell.ps1](/hyperv/powershell.ps1) script to automate the creation of the virtual machine.
 
-## 4. Configuración de Red
+## 4. Network Configuration
 
-### 4.1. Crear un Switch Externo
+### 4.1. Create an External Switch
 
-Para conectar la máquina virtual a la red, crea un switch externo en modo bridge:
+To connect the virtual machine to the network, create an external switch in bridge mode:
 
 ```powershell
 New-VMSwitch -Name "WiFi-Bridge" -NetAdapterName "Wi-Fi" -AllowManagementOS $true
 ```
 
-### 4.2. Configuración Gráfica (Opcional)
+### 4.2. Graphical Configuration (Optional)
 
-1. Abre el Administrador de Hyper-V.
-2. Ve a la configuración de conmutadores virtuales.
-3. Crea un nuevo conmutador de tipo Externo.
-4. Asigna el nombre `WiFi-Bridge`.
-5. Selecciona el adaptador de red que contenga "Wi-Fi Adapter".
+1. Open the Hyper-V Manager.
+2. Go to the Virtual Switch Manager.
+3. Create a new switch of type External.
+4. Assign the name WiFi-Bridge.
+5. Select the network adapter labeled "Wi-Fi Adapter."
 
-### 4.3. Conectar la Máquina Virtual al Switch
+### 4.3. Connect the Virtual Machine to the Switch
 
-Después de crear el switch, conecta la máquina virtual:
+After creating the switch, connect the virtual machine:
 
 ```powershell
 Connect-VMNetworkAdapter -VMName "falcon9" -SwitchName "WiFi-Bridge"

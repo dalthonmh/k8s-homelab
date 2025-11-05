@@ -4,15 +4,15 @@
 
 # Kubernetes Homelab Setup
 
-Este repositorio contiene scripts, configuraciones y documentación para configurar un cluster Kubernetes de 3 nodos distribuidos entre múltiples hypervisors.
+This repository contains scripts, configurations, and documentation to set up a 3-node Kubernetes cluster distributed across multiple hypervisors.
 
-- **Hypervisor**: Hyper-V o VirtualBox
+- **Hypervisor**: Hyper-V or VirtualBox
 - **OS**: Debian 13 (Trixie)
 - **Kubernetes**: kubeadm, kubelet, kubectl
 - **Container Runtime**: containerd
 - **CNI**: Calico
 
-## Arquitectura
+## Architecture
 
 ```
                          🌐 Internet
@@ -34,35 +34,26 @@ Este repositorio contiene scripts, configuraciones y documentación para configu
               └──────────┘ └──────────┘ └─────────┘
 ```
 
-## Recursos del Cluster
+## Cluster Resources
 
-### Capacidad Total
+### Total Capacity
 
-- **CPU Total**: 6 vCPUs (2 por nodo)
-- **RAM Total**: 6 GB (2GB por nodo)
-- **Nodos Worker**: 2 (crewdragon, falcon9)
-- **Capacidad Pods**: ~110 pods por nodo (aprox. 220 pods workers)
+- **Total CPU**: 6 vCPUs (2 per node)
+- **Total RAM**: 6 GB (2GB per node)
+- **Worker Nodes**: 2 (crewdragon, falcon9)
+- **Pod Capacity**: ~110 pods per node (approximately 220 pods across workers)
 
-### Detalles de los Nodos
+### Node Details
 
-| Hostname       | Rol                    | IP            | RAM | vCPU | Hypervisor   | Host    |
+| Hostname       | Role                   | IP            | RAM | vCPU | Hypervisor   | Host    |
 | -------------- | ---------------------- | ------------- | --- | ---- | ------------ | ------- |
 | **spacex**     | Control Plane (Master) | 192.168.0.200 | 2GB | 2    | VirtualBox   | macOS   |
 | **crewdragon** | Worker Node            | 192.168.0.201 | 2GB | 2    | Hyper-V Gen2 | Windows |
 | **falcon9**    | Worker Node            | 192.168.0.202 | 2GB | 2    | Hyper-V Gen2 | Windows |
 
-### /etc/hosts en todos los nodos
+## Installation
 
-```bash
-# Agregar en /etc/hosts de cada nodo
-192.168.0.200   spacex
-192.168.0.201   crewdragon
-192.168.0.202   falcon9
-```
-
-## Instalación
-
-Ejecutar los pasos descritos en el archivo [easy_steps.txt](/easy_steps.txt)
+Follow the steps described in the [easy_steps.txt](/easy_steps.txt) file.
 
 ## Credit
 
@@ -70,5 +61,5 @@ This role was created by dalthonmh@gmail.com.
 
 Based on:
 
-- [Elias Igwegbu](https://www.linkedIn.com/in/elias-igwegbu) - https://galaxy.ansible.com/ui/namespaces/ecigwegbu/
+- Elias Igwegbu - https://galaxy.ansible.com/ui/namespaces/ecigwegbu/
 - Copyright (c) 2025 Marouane - https://github.com/mlouguid/k8s-Ansible.git

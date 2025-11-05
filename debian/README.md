@@ -1,55 +1,55 @@
-# Automatización de Instalación de Debian 13
+# Debian 13 Installation Automation
 
-Este archivo preseed automatiza la instalación de Debian 13 (Trixie) para entornos como Hyper-V, VirtualBox o hardware bare-metal. Configura aspectos clave como localización, red, cuentas, particionado, sistema base, repositorios, y comandos finales para optimizar la instalación.
+This preseed file automates the installation of Debian 13 (Trixie) for environments such as Hyper-V, VirtualBox, or bare-metal hardware. It configures key aspects such as localization, networking, accounts, partitioning, base system, repositories, and final commands to optimize the installation.
 
-## 1. Resumen de Configuración
+## 1. Configuration Summary
 
-- **Localización y Red**: Idioma inglés, teclado US, red DHCP con hostname predeterminado.
-- **Cuentas**: Desactiva el acceso root directo, crea un usuario administrador con sudo.
-- **Particionado**: Borra el disco, usa ext4 sin swap, y configura partición automática.
-- **Sistema Base**: Instala el kernel genérico AMD64 y habilita firmware adicional.
-- **Repositorios y Paquetes**: Activa secciones non-free/contrib, instala herramientas básicas y SSH, y habilita actualizaciones automáticas.
-- **Cargador de Arranque**: Instala GRUB en el disco principal con inicio rápido.
-- **Comandos Finales**: Ajusta SSH, habilita servicios esenciales como memoria Swap, y realiza limpieza y actualizaciones post-instalación.
+- **Localization and Networking**: English language, US keyboard, DHCP networking with default hostname.
+- **Accounts**: Disables direct root access, creates an admin user with sudo privileges.
+- **Partitioning**: Wipes the disk, uses ext4 without swap, and configures automatic partitioning.
+- **Base System**: Installs the generic AMD64 kernel and enables additional firmware.
+- **Repositories and Packages**: Activates non-free/contrib sections, installs basic tools and SSH, and enables automatic updates.
+- **Bootloader**: Installs GRUB on the main disk with fast boot enabled.
+- **Final Commands**: Adjusts SSH, enables essential services like Swap memory, and performs post-installation cleanup and updates.
 
-## 2. Pasos para la Instalación
+## 2. Installation Steps
 
-### 2.1. Verificar Python Instalado
+### 2.1. Verify Python Installation
 
-Asegúrate de tener Python instalado:
+Ensure Python is installed:
 
 ```bash
 python --version
 # Python 3.12.6
 ```
 
-### 2.2. Levantar un Servidor Local para el Preseed
+### 2.2. Start a Local Server for the Preseed File
 
-1. Navega al directorio donde se encuentra el archivo `preseed.cfg`:
+1. Navigate to the directory where the `preseed.cfg` file is located:
 
    ```bash
    cd /k8s-homelab/debian
    python3 -m http.server 8090
    ```
 
-2. Durante la instalación de Debian:
-   - Selecciona: **Advanced options → Automated install**.
-   - Cuando se solicite el archivo preseed, ingresa la URL:
+2. During the Debian installation:
+   - Select: **Advanced options → Automated install**.
+   - [When prompted](/docs/debian-installation-request-preseed.png) for the preseed file, enter the URL:
      ```
-     http://<IP-del-servidor>:8090/preseed.cfg
+     http://<server-ip>:8090/preseed.cfg
      ```
 
-### 2.3. Configurar una IP Estática
+### 2.3. Configure a Static IP Address
 
-Después de instalar el sistema operativo, configura una dirección IP estática:
+After installing the operating system, configure a static IP address:
 
-1. Edita el archivo de configuración de interfaces de red:
+1. Edit the network interfaces configuration file:
 
    ```bash
    sudo vim /etc/network/interfaces
    ```
 
-2. Actualiza el archivo con la configuración deseada:
+2. Update the file with the desired configuration:
 
    ```bash
    # This file describes the network interfaces available on your system
@@ -70,36 +70,36 @@ Después de instalar el sistema operativo, configura una dirección IP estática
        dns-nameservers 8.8.8.8 1.1.1.1
    ```
 
-3. Guarda los cambios y reinicia el servicio de red:
+3. Save the changes and restart the networking service:
 
    ```bash
    sudo systemctl restart networking
    ```
 
-### 2.4. Cambiar el Nombre del Nodo
+### 2.4. Change the Node Name
 
-Para cambiar el nombre del nodo (hostname):
+To change the node name (hostname):
 
 ```bash
-sudo hostnamectl set-hostname <nuevo-nombre>
+sudo hostnamectl set-hostname <new-name>
 hostname
 ```
 
-## 3. Configurar sudo sin contraseña en las VMs Debian
+## 3. Configure Passwordless sudo on Debian VMs
 
-Cambiamos el editor por defecto por uno mas cómodo:
+Change the default editor to a more convenient one:
 
 ```bash
 sudo update-alternatives --config editor
 ```
 
-En cada máquina virtual Debian, editar el archivo sudoers:
+On each Debian virtual machine, edit the sudoers file:
 
 ```bash
 sudo visudo
 ```
 
-Agrega al final del archivo (reemplaza `superadmin` con tu usuario real):
+Add the following line at the end of the file (replace `superadmin` with your actual username):
 
 ```bash
 superadmin ALL=(ALL) NOPASSWD:ALL

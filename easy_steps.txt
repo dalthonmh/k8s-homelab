@@ -1,16 +1,14 @@
-
-# Resumen de pasos
+# Steps Summary
 ------------------
 
-1. Instalar debian
-Pasar por red el archivo preseed.cfg
+1. Install Debian
+Transfer the `preseed.cfg` file over the network:
 http://192.168.0.115:8090/preseed.cfg
 
+2. Configuration on each VM (node)
+2.1. Set hostnames
 
-2. Configuración en cada VM (nodo)
-2.1. Poner hostsnames
-
-# Agregar en /etc/hosts de cada nodo
+# Add the following to /etc/hosts on each node
 cat <<EOF | sudo tee -a /etc/hosts
 127.0.0.1   spacex
 
@@ -19,15 +17,14 @@ cat <<EOF | sudo tee -a /etc/hosts
 192.168.0.202 orion
 EOF
 
-2.2. Configurar IP estática por cada nodo
+2.2. Configure a static IP for each node
 
 sudo vim set_static_ip.sh
 sudo chmod +x set_static_ip.sh
 sudo ./set_static_ip.sh 192.168.0.200 spacex
 
-
-3. Dar acceso ssh sin contraseña desde host principal:
-Desde donde se ejecutará ansible, no necesariamente el nodo controlplane.
+3. Set up passwordless SSH access from the main host:
+From the machine where Ansible will be executed (not necessarily the control plane node).
 
 cd ~/.ssh
 ssh-keygen -t ed25519 -C "ansible@mac"
@@ -54,23 +51,20 @@ Host 192.168.0.202
     IdentityFile ~/.ssh/id_ansible_mac_debian
     IdentitiesOnly yes
 
-Probar acceso sin contraseña
+Test passwordless access:
 ssh superadmin@192.168.0.202
 ok
 
-
-4. Ejecutar ansible desde host principal
+4. Run Ansible from the main host
 
 cd /ansible
 ansible -i hosts.ini all -m ping
 ansible-playbook -i hosts.ini kube-play.yml
 
-
-5. Ejecutar comandos script post instalación en nodo controlplane (master node)
+5. Run post-installation scripts on the control plane node (master node)
 
 ./setup_ssh.sh
 sudo ./post_install.sh
 
-
-Nota: Se pudo instalar el cluster con 3 nodos (1M/2W) en 44:41.34 minutos.
-!listo!
+Note: The cluster was successfully installed with 3 nodes (1 master / 2 workers) in 44:41.34 minutes.
+Done!

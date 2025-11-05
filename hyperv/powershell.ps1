@@ -1,11 +1,11 @@
-# Abrir PowerShell como Administrador
-# Creación: 28/10/2025
-# Autor: dalthonmh
+# Open PowerShell as Administrator
+# Created: 2025-10-28
+# Author: dalthonmh
 
 
 # -----------------------------------------------
-# 1. Crear VM Generación 2
-# Nota: newglenn es el nombre de la VM que vamos a crear
+# 1. Create Generation 2 VM
+# Note: "newglenn" is the name of the VM we are going to create
 New-VM -Name "newglenn" `
     -MemoryStartupBytes 2GB `
     -Generation 2 `
@@ -13,21 +13,21 @@ New-VM -Name "newglenn" `
     -NewVHDSizeBytes 20GB `
     -SwitchName "Default Switch"
 
-# Desactivar memoria dinámica
+# Disable dynamic memory
 Set-VMMemory -VMName "newglenn" `
     -DynamicMemoryEnabled $false
 
-# Configurar procesadores
+# Configure processors
 Set-VMProcessor -VMName "newglenn" -Count 2
 
-# Deshabilitar Secure Boot (importante para instalación)
+# Disable Secure Boot (important for installation)
 Set-VMFirmware -VMName "newglenn" -EnableSecureBoot Off
 
-# Adjuntar ISO de Debian
+# Attach Debian ISO
 Add-VMDvdDrive -VMName "newglenn" `
     -Path "D:\iso\debian-13-amd64-netinst.iso"
 
-# Configurar boot desde DVD primero
+# Configure boot from DVD first
 $dvd = Get-VMDvdDrive -VMName "newglenn"
 Set-VMFirmware -VMName "newglenn" -FirstBootDevice $dvd
 # -----------------------------------------------
@@ -35,23 +35,23 @@ Set-VMFirmware -VMName "newglenn" -FirstBootDevice $dvd
 
 
 # -----------------------------------------------
-# 2. Configuracion de red
-# Listar switches disponibles
+# 2. Network Configuration
+# List available switches
 Get-VMSwitch
-# Crear un switch externo en modo bridge usando el Wi-Fi
+# Create an external switch in bridge mode using Wi-Fi
 New-VMSwitch -Name "WiFi-Bridge" -NetAdapterName "Wi-Fi" -AllowManagementOS $true
 # -----------------------------------------------
 
 
 
 # -----------------------------------------------
-# 3. Establecer la red luego de instalar el sistema operativo
+# 3. Set up the network after installing the operating system
 Connect-VMNetworkAdapter -VMName "newglenn" -SwitchName "WiFi-Bridge"
 # -----------------------------------------------
 
 
 
 # -----------------------------------------------
-# 4. Eliminar la maquina virtual
+# 4. Delete the virtual machine
 Remove-VM -Name "newglenn" -Force
 # -----------------------------------------------

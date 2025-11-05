@@ -1,23 +1,23 @@
-# Creacion de maquina virtual en VirtualBox usando VBoxManage
-# Creation: 30/10/2025
+# Virtual Machine creation in VirtualBox using VBoxManage
+# Creation: 2025-10-30
 # Author: dalthonmh
 
-# Nota: "spacex" es el nombre de la VM que vamos a crear
+# Note: "spacex" is the name of the VM we are going to create.
 
 # -----------------------------------------------
-# 1. Verificación del nombre del adaptador de red Wifi
+# 1. Verify the name of the Wifi network adapter
 VBoxManage list bridgedifs | grep -i name
-# En el comando VBoxManage modifyvm "spacex", reemplazar en bridgeadapter1 el nombre del adaptador al de Wifi
-# Ejemplo: "--bridgeadapter1 "en0: Wi-Fi""
+# In the VBoxManage modifyvm "spacex" command, replace the bridgeadapter1 name with the Wifi adapter name.
+# Example: "--bridgeadapter1 "en0: Wi-Fi""
 # -----------------------------------------------
 
 
 
 # -----------------------------------------------
-# 2. Crear la VM en VirtualBox
+# 2. Create the VM in VirtualBox
 VBoxManage createvm --name "spacex" --ostype "Debian_64" --register
 
-# Configuración general
+# General configuration
 VBoxManage modifyvm "spacex" \
   --memory 2048 \
   --cpus 2 \
@@ -31,26 +31,26 @@ VBoxManage modifyvm "spacex" \
   --nictype1 82540EM \
   --cableconnected1 on
 
-# Crear y adjuntar disco duro virtual
+# Create and attach a virtual hard disk
 VBoxManage createhd --filename "$HOME/VirtualBox VMs/spacex/spacex.vdi" --size 20000 --format VDI
 VBoxManage storagectl "spacex" --name "SATA Controller" --add sata --controller IntelAhci
 VBoxManage storageattach "spacex" --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium "$HOME/VirtualBox VMs/spacex/spacex.vdi"
 
-# Adjuntar la ISO de instalación
+# Attach the installation ISO
 VBoxManage storagectl "spacex" --name "IDE Controller" --add ide
 VBoxManage storageattach "spacex" --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "/Users/dalthon/Documents/iso/debian-13-amd64-netinst.iso"
 
-# Configurar orden de arranque
+# Configure boot order
 VBoxManage modifyvm "spacex" --boot1 dvd --boot2 disk
 
-# Iniciar la máquina virtual
+# Start the virtual machine
 VBoxManage startvm "spacex" --type gui
 # -----------------------------------------------
 
 
 
 # -----------------------------------------------
-# 3. Eliminar la maquina virtual
+# 3. Delete the virtual machine
 VBoxManage controlvm "spacex" poweroff
 VBoxManage unregistervm "spacex" --delete
 # -----------------------------------------------
