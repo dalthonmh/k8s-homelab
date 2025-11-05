@@ -1,5 +1,5 @@
 #!/bin/bash
-# set-static-ip.sh
+# set_static_ip.sh
 # Created: 2025-11-04, dalthonmh
 # Description:
 # This script configures a static IP address and hostname on a Debian 13 system.
@@ -80,10 +80,6 @@ iface $INTERFACE inet static
 EOF
 
 echo "👉 Network configuration updated."
-
-# Restart the network service to apply changes
-systemctl restart networking
-echo "👉 Network service restarted."
 
 # ------------------------------------
 # Step 4. Update hostname

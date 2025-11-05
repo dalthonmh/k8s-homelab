@@ -1,5 +1,5 @@
 #!/bin/bash
-# post-install.sh
+# post_install.sh
 # Created: 2025-11-03, dalthonmh
 # Description:
 # Automates the post-installation setup of a Kubernetes cluster. Designed to

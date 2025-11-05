@@ -55,7 +55,20 @@ Este repositorio contiene scripts, configuraciones y documentación para configu
 
 ```bash
 # Agregar en /etc/hosts de cada nodo
-192.168.0.200   spacex      k8s-master
-192.168.0.201   crewdragon    k8s-worker1
-192.168.0.202   falcon9     k8s-worker2
+192.168.0.200   spacex
+192.168.0.201   crewdragon
+192.168.0.202   falcon9
 ```
+
+## Instalación
+
+Ejecutar los pasos descritos en el archivo [easy_steps.txt](/easy_steps.txt)
+
+## Credit
+
+This role was created by dalthonmh@gmail.com.
+
+Based on:
+
+- [Elias Igwegbu](https://www.linkedIn.com/in/elias-igwegbu) - https://galaxy.ansible.com/ui/namespaces/ecigwegbu/
+- Copyright (c) 2025 Marouane - https://github.com/mlouguid/k8s-Ansible.git

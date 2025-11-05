@@ -1,0 +1,76 @@
+
+# Resumen de pasos
+------------------
+
+1. Instalar debian
+Pasar por red el archivo preseed.cfg
+http://192.168.0.115:8090/preseed.cfg
+
+
+2. Configuración en cada VM (nodo)
+2.1. Poner hostsnames
+
+# Agregar en /etc/hosts de cada nodo
+cat <<EOF | sudo tee -a /etc/hosts
+127.0.0.1   spacex
+
+192.168.0.200 spacex
+192.168.0.201 falcon9
+192.168.0.202 orion
+EOF
+
+2.2. Configurar IP estática por cada nodo
+
+sudo vim set_static_ip.sh
+sudo chmod +x set_static_ip.sh
+sudo ./set_static_ip.sh 192.168.0.200 spacex
+
+
+3. Dar acceso ssh sin contraseña desde host principal:
+Desde donde se ejecutará ansible, no necesariamente el nodo controlplane.
+
+cd ~/.ssh
+ssh-keygen -t ed25519 -C "ansible@mac"
+id_ansible_mac_debian.pub
+ssh-copy-id -i ~/.ssh/id_ansible_mac_debian.pub superadmin@192.168.0.200
+ssh-copy-id -i ~/.ssh/id_ansible_mac_debian.pub superadmin@192.168.0.201
+ssh-copy-id -i ~/.ssh/id_ansible_mac_debian.pub superadmin@192.168.0.202
+
+vim ~/.ssh/config
+
+# ----- Local Virtual Machines -----
+Host 192.168.0.200
+    User superadmin
+    IdentityFile ~/.ssh/id_ansible_mac_debian
+    IdentitiesOnly yes
+
+Host 192.168.0.201
+    User superadmin
+    IdentityFile ~/.ssh/id_ansible_mac_debian
+    IdentitiesOnly yes
+
+Host 192.168.0.202
+    User superadmin
+    IdentityFile ~/.ssh/id_ansible_mac_debian
+    IdentitiesOnly yes
+
+Probar acceso sin contraseña
+ssh superadmin@192.168.0.202
+ok
+
+
+4. Ejecutar ansible desde host principal
+
+cd /ansible
+ansible -i hosts.ini all -m ping
+ansible-playbook -i hosts.ini kube-play.yml
+
+
+5. Ejecutar comandos script post instalación en nodo controlplane (master node)
+
+./setup_ssh.sh
+sudo ./post_install.sh
+
+
+Nota: Se pudo instalar el cluster con 3 nodos (1M/2W) en 44:41.34 minutos.
+!listo!
