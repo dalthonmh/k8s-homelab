@@ -55,6 +55,10 @@ This repository contains scripts, configurations, and documentation to set up a 
 
 Follow the steps described in the [easy_steps.txt](/easy_steps.txt) file.
 
+## Contributing
+
+If you want to improve something, don't hesitate to create an issue or submit a pull request. Any contribution that helps share knowledge and improve this project is welcome!
+
 ## Credit
 
 This role was created by dalthonmh@gmail.com.
