@@ -2,13 +2,15 @@
 ------------------
 
 1. Install Debian
-Transfer the `preseed.cfg` file over the network:
+Use the `preseed.cfg` file to automate the installation:
 http://192.168.0.115:8090/preseed.cfg
+
 
 2. Configuration on each VM (node)
 2.1. Set hostnames
 
-# Add the following to /etc/hosts on each node
+Add the following to `/etc/hosts` on each node:  
+
 cat <<EOF | sudo tee -a /etc/hosts
 127.0.0.1   spacex
 
@@ -17,14 +19,16 @@ cat <<EOF | sudo tee -a /etc/hosts
 192.168.0.202 orion
 EOF
 
-2.2. Configure a static IP for each node
+2.2. Set static IP
+Run the following commands on each node:
 
 sudo vim set_static_ip.sh
 sudo chmod +x set_static_ip.sh
 sudo ./set_static_ip.sh 192.168.0.200 spacex
 
-3. Set up passwordless SSH access from the main host:
-From the machine where Ansible will be executed (not necessarily the control plane node).
+
+3. Set Up Passwordless SSH
+From the machine running Ansible:
 
 cd ~/.ssh
 ssh-keygen -t ed25519 -C "ansible@mac"
@@ -34,7 +38,6 @@ ssh-copy-id -i ~/.ssh/id_ansible_mac_debian.pub superadmin@192.168.0.201
 ssh-copy-id -i ~/.ssh/id_ansible_mac_debian.pub superadmin@192.168.0.202
 
 vim ~/.ssh/config
-
 # ----- Local Virtual Machines -----
 Host 192.168.0.200
     User superadmin
@@ -51,20 +54,22 @@ Host 192.168.0.202
     IdentityFile ~/.ssh/id_ansible_mac_debian
     IdentitiesOnly yes
 
-Test passwordless access:
+Test SSH access:
 ssh superadmin@192.168.0.202
-ok
 
-4. Run Ansible from the main host
 
-cd /ansible
+4. Run Ansible
+From the main host:
+
+cd ansible
 ansible -i hosts.ini all -m ping
 ansible-playbook -i hosts.ini kube-play.yml
 
-5. Run post-installation scripts on the control plane node (master node)
+
+5. Run Post-Installation Scripts
+On the control plane node (master):
 
 ./setup_ssh.sh
 sudo ./post_install.sh
 
-Note: The cluster was successfully installed with 3 nodes (1 master / 2 workers) in 44:41.34 minutes.
 Done!
