@@ -1,5 +1,5 @@
 #!/bin/bash
-# set_static_ip.sh
+# set-static-ip.sh
 # Created: 2025-11-04, dalthonmh
 # Description:
 # This script configures a static IP address and hostname on a Debian 13 system.

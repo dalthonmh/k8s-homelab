@@ -1,5 +1,5 @@
 #!/bin/bash
-# post_install.sh
+# post-install.sh
 # Created: 2025-11-03, dalthonmh
 # Description:
 # Automates the post-installation setup of a Kubernetes cluster. Designed to
@@ -13,10 +13,10 @@
 # Requirements:
 # - Run this script as root or with sudo privileges.
 # - Ensure "hosts.ini" is in the same directory.
-# - Worker nodes must be accessible via SSH. (previously set up with setup_ssh.sh)
+# - Worker nodes must be accessible via SSH. (previously set up with setup-ssh.sh)
 #
 # Usage:
-#   sudo ./post_install.sh
+#   sudo ./post-install.sh
 
 
 # Rollback when any command fails

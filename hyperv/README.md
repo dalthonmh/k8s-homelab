@@ -28,7 +28,7 @@
 ## 3. Steps to Create the Virtual Machine
 
 1. Open PowerShell as Administrator.
-2. Run the [powershell.ps1](/hyperv/powershell.ps1) script to automate the creation of the virtual machine.
+2. Run the [create-vm.ps1](/hyperv/create-vm.ps1) script to automate the creation of the virtual machine.
 
 ## 4. Network Configuration
 

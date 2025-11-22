@@ -28,7 +28,7 @@ VBoxManage --version
 
 ## 3. Create and Configure the Virtual Machine
 
-Run the commands in the create_vm.sh file to create and configure the virtual machine. Ensure the ISO file is located in the specified path.
+Run the commands in the create-vm.sh file to create and configure the virtual machine. Ensure the ISO file is located in the specified path.
 
 Basic commands:
 

@@ -22,9 +22,9 @@ EOF
 2.2. Set static IP
 Run the following commands on each node:
 
-sudo vim set_static_ip.sh
-sudo chmod +x set_static_ip.sh
-sudo ./set_static_ip.sh 192.168.0.200 spacex
+sudo vim set-static-ip.sh
+sudo chmod +x set-static-ip.sh
+sudo ./set-static-ip.sh 192.168.0.200 spacex
 
 
 3. Set Up Passwordless SSH
@@ -69,7 +69,7 @@ ansible-playbook -i hosts.ini kube-play.yml
 5. Run Post-Installation Scripts
 On the control plane node (master):
 
-./setup_ssh.sh
-sudo ./post_install.sh
+./setup-ssh.sh
+sudo ./post-install.sh
 
 Done!

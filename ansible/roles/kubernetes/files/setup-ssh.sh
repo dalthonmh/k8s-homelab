@@ -1,5 +1,5 @@
 #!/bin/bash
-# setup_ssh.sh
+# setup-ssh.sh
 # Created: 2025-11-04, dalthonmh
 # Description:
 # This script sets up SSH key-based access from the master node to worker nodes
@@ -16,7 +16,7 @@
 # - Enter the "superadmin" password for each worker node when prompted.
 
 # Usage:
-#   ./setup_ssh.sh
+#   ./setup-ssh.sh
 
 # Variables
 SSH_KEY_NAME="id_ansible_master_debian"
